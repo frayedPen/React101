@@ -5,18 +5,25 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {apiResponse: ""};
+    this.state = {apiResponse: []};
   }
 
   callApi() {
     fetch("http://localhost:9000/testAPI")
-      .then(res => res.text())
+      .then(res => res.json())
+      // .then(res => console.log(res))
       .then(res => this.setState({apiResponse: res}))
       .catch(err => err);
   }
 
   componentDidMount() {
     this.callApi();
+  }
+
+  renderResponse() {
+    return this.state.apiResponse.map(function(obj) {
+      return <p className="app-intro">{obj.name}</p>;
+    })
   }
 
   render() {
@@ -27,7 +34,7 @@ class App extends Component {
           <p>
             Edit <code>src/App.js</code> and save to wa.
           </p>
-          <p className="app-intro">{this.state.apiResponse}</p>
+          {this.renderResponse()}
         </header>
       </div>
     );
